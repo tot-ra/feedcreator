@@ -917,13 +917,13 @@ class RSSCreator091 extends FeedCreator {
 			$feed.= "            <url>".$this->image->url."</url>\n"; 
 			$feed.= "            <title>".FeedCreator::iTrunc(htmlspecialchars($this->image->title),100)."</title>\n"; 
 			$feed.= "            <link>".$this->image->link."</link>\n";
-			if ($this->image->width!="") {
+			if (isset($this->image->width) && $this->image->width!="") {
 				$feed.= "            <width>".$this->image->width."</width>\n";
 			}
-			if ($this->image->height!="") {
+			if (isset($this->image->height) && $this->image->height!="") {
 				$feed.= "            <height>".$this->image->height."</height>\n";
 			}
-			if ($this->image->description!="") {
+			if (isset($this->image->description) && $this->image->description!="") {
 				$feed.= "            <description>".$this->image->getDescription()."</description>\n";
 			}
 			$feed.= "        </image>\n";
