@@ -584,8 +584,8 @@ class FeedCreator extends HtmlDescribable {
 	
 	function _createStylesheetReferences() {
 		$xml = "";
-		if ($this->cssStyleSheet) $xml .= "<?xml-stylesheet href=\"".$this->cssStyleSheet."\" type=\"text/css\"?>\n";
-		if ($this->xslStyleSheet) $xml .= "<?xml-stylesheet href=\"".$this->xslStyleSheet."\" type=\"text/xsl\"?>\n";
+		if (isset($this->cssStyleSheet) && $this->cssStyleSheet) $xml .= "<?xml-stylesheet href=\"".$this->cssStyleSheet."\" type=\"text/css\"?>\n";
+		if (isset($this->xslStyleSheet) && $this->xslStyleSheet) $xml .= "<?xml-stylesheet href=\"".$this->xslStyleSheet."\" type=\"text/xsl\"?>\n";
 		return $xml;
 	}
 	
@@ -803,7 +803,7 @@ class RSSCreator10 extends FeedCreator {
 	function createFeed() {     
 		$feed = "<?xml version=\"1.0\" encoding=\"".$this->encoding."\"?>\n";
 		$feed.= $this->_createGeneratorComment();
-		if ($this->cssStyleSheet=="") {
+		if (isset($this->cssStyleSheet) && $this->cssStyleSheet == "") {
 			$cssStyleSheet = "http://www.w3.org/2000/08/w3c-synd/style.css";
 		}
 		$feed.= $this->_createStylesheetReferences();
@@ -816,20 +816,22 @@ class RSSCreator10 extends FeedCreator {
 		$feed.= "        <title>".htmlspecialchars($this->title)."</title>\n";
 		$feed.= "        <description>".htmlspecialchars($this->description)."</description>\n";
 		$feed.= "        <link>".$this->link."</link>\n";
-		if ($this->image!=null) {
+		if (isset($this->image) && $this->image != null) {
 			$feed.= "        <image rdf:resource=\"".$this->image->url."\" />\n";
 		}
 		$now = new FeedDate();
 		$feed.= "       <dc:date>".htmlspecialchars($now->iso8601())."</dc:date>\n";
 		$feed.= "        <items>\n";
 		$feed.= "            <rdf:Seq>\n";
-		for ($i=0;$i<count($this->items);$i++) {
+		
+		for ($i=0; $i<count($this->items); $i++) {
 			$feed.= "                <rdf:li rdf:resource=\"".htmlspecialchars($this->items[$i]->link)."\"/>\n";
 		}
+		
 		$feed.= "            </rdf:Seq>\n";
 		$feed.= "        </items>\n";
 		$feed.= "    </channel>\n";
-		if ($this->image!=null) {
+		if (isset($this->image) && $this->image != null) {
 			$feed.= "    <image rdf:about=\"".$this->image->url."\">\n";
 			$feed.= "        <title>".$this->image->title."</title>\n";
 			$feed.= "        <link>".$this->image->link."</link>\n";
